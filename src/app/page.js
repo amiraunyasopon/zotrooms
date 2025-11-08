@@ -25,9 +25,9 @@ export default function random() {
 
 
 
-    return(
+    return (
         <div>
-            
+
         </div>
     )
 }
