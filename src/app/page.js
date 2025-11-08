@@ -1,4 +1,5 @@
 'use client';
+import Navbar from "../components/navbar.js"
 
 import { useState, useEffect } from 'react';
 import { fetchRooms, fetchRoom } from "./api/user-api";
@@ -34,7 +35,9 @@ export default function MainPage() {
     }, [])
 
     return (
-        <>
+        <div className="min-h-screen w-screen">
+        <Navbar />
+        <div className="w-3/4 h-full fixed right-0">
             <h1>Langston Library</h1>
             {
                 data && buildings["Langston Library"] ?
@@ -75,6 +78,7 @@ export default function MainPage() {
                     :
                     <div> No Rooms Available for GML</div>
             }
-        </>
+        </div>
+        </div>
     )
 }
