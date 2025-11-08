@@ -41,17 +41,33 @@ export default function MainPage() {
 
     return (
         <>
+            <h1>Langston Library</h1>
             {
-                buildings && buildings.includes("Langston Library") ? <div>Map list to display study rooms for LL</div> : <div> No Rooms Available for LL</div>
+                buildings && buildings.includes("Langston Library") ?
+                    <div>Map list to display study rooms for LL</div>
+                    :
+                    <div> No Rooms Available for LL</div>
             }
+            <h1>Science Library</h1>
             {
-                buildings && buildings.includes("Science Library") ? <div>Map list to display study rooms for SL</div> : <div> No Rooms Available for SL</div>
+                buildings && buildings.includes("Science Library") ?
+                    <div>Map list to display study rooms for SL</div>
+                    :
+                    <div> No Rooms Available for SL</div>
             }
+            <h1>Gateway Study Center</h1>
             {
-                buildings && buildings.includes("Gateway Study Center") ? <div>Map list to display study rooms for GSC</div> : <div> No Rooms Available for GSC</div>
+                buildings && buildings.includes("Gateway Study Center") ?
+                    <div>Map list to display study rooms for GSC</div>
+                    :
+                    <div> No Rooms Available for GSC</div>
             }
+            <h1>Multimedia Resources Center</h1>
             {
-                buildings && buildings.includes("Multimedia Resources Center") ? <div>Map list to display study rooms for MRC</div> : <div> No Rooms Available for MRC</div>
+                buildings && buildings.includes("Multimedia Resources Center") ?
+                    <div>Map list to display study rooms for MRC</div>
+                    :
+                    <div> No Rooms Available for MRC</div>
             }
         </>
     )
