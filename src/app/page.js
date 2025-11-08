@@ -5,7 +5,6 @@ import { fetchRooms, fetchRoom } from "./api/user-api";
 
 export default function MainPage() {
     const [data, setData] = useState([]);
-    const [rooms, setRooms] = useState([]);
     const [buildings, setBuildings] = useState([{ "Langston Library": true }, { "Science Library": true }, { "Gateway Study Center": true }, { "Multimedia Resources Center": true }, { "Grunigen Medical Library": true }]);
     const [minCapacity, setMinCapacity] = useState(1000);
     const [startTime, setStartTime] = useState(0);
@@ -20,47 +19,31 @@ export default function MainPage() {
     // if a date is selected, make sure to map through study rooms and only pass study rooms which have at least one slot on the day that isAvailable = true
 
     // check for slots between start time and end time, if all slots are available, it passes the map check
-    const getData = async () => {
-        try {
-            const json = await fetchRooms();
-            setData(json.data);
-            console.log('getData', json.data);
-        } catch (error) {
-            console.error("Error fetching room data. ", error);
-        }
-    }
-
-    const getRoomsData = async () => {
-        for (let i = 0; i < data.length; i++) {
-            const specificRoomData = await fetchRoom(data[i].id)
-            setRooms((prevList) => {
-                return [...prevList, specificRoomData]
-            })
-        }
-        console.log(rooms)
-    }
 
     useEffect(() => {
+        const getData = async () => {
+            try {
+                const json = await fetchRooms();
+                setData(json.data);
+                console.log('getData', json.data);
+            } catch (error) {
+                console.error("Error fetching room data. ", error);
+            }
+        }
         getData();
     }, [])
 
-    useEffect(() => {
-        if (data.length > 0) {
-            getRoomsData();
-        }
-    }, [data])
-
-    useEffect(() => {
-        if (rooms.length == 74)
-            console.log(rooms)
-    }, [rooms])
-    
     return (
         <>
             <h1>Langston Library</h1>
             {
-                buildings["Langston Library"] ?
-                    <div>Map list to display study rooms for LL</div>
+                data && buildings["Langston Library"] ?
+                    data.filter((room) => {
+                        room.location === "Langston Library"
+                    })
+                        .map((item) => {
+                            <div key={item.id}>{item.id}</div>
+                        })
                     :
                     <div> No Rooms Available for LL</div>
             }
