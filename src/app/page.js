@@ -6,7 +6,7 @@ import { fetchRooms, fetchRoom } from "./api/user-api";
 export default function MainPage() {
     const [data, setData] = useState([]);
     const [rooms, setRooms] = useState([]);
-    const [buildings, setBuildings] = useState(["Langston Library", "Science Library", "Gateway Study Center", "Multimedia Resources Center"]);
+    const [buildings, setBuildings] = useState(["Langston Library", "Science Library", "Gateway Study Center", "Multimedia Resources Center", "Grunigen Medical Library"]);
     const [maxCapacity, setMaxCapacity] = useState(1000);
 
     const getData = async () => {
@@ -38,7 +38,10 @@ export default function MainPage() {
             getRoomsData();
         }
     }, [data])
-
+    useEffect(() => {
+        if (rooms.length == 74)
+            console.log(rooms)
+    }, [rooms])
     return (
         <>
             <h1>Langston Library</h1>
@@ -68,6 +71,13 @@ export default function MainPage() {
                     <div>Map list to display study rooms for MRC</div>
                     :
                     <div> No Rooms Available for MRC</div>
+            }
+            <h1>Grunigen Medical Library</h1>
+            {
+                buildings && buildings.includes("Grunigen Medical Library") ?
+                    <div>Map list to display study rooms for GML</div>
+                    :
+                    <div> No Rooms Available for GML</div>
             }
         </>
     )
