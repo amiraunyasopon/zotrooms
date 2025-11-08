@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { fetchRooms, fetchRoom } from "./api/user-api";
 
-export default function random() {
+export default function MainPage() {
     const [data, setData] = useState([]);
     const [rooms, setRooms] = useState([]);
     const [buildings, setBuildings] = useState(["Langston Library", "Science Library", "Gateway Study Center", "Multimedia Resources Center"]);
