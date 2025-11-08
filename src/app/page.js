@@ -6,9 +6,8 @@ import { fetchRooms, fetchRoom } from "./api/user-api";
 export default function random() {
     const [data, setData] = useState([]);
     const [rooms, setRooms] = useState([]);
-    const [building, setBuilding] = useState(null);
-    const [maxCapacity, setMaxCapacity] = useState(null);
-    const [roomTest, setRoomTest] = useState(null)
+    const [buildings, setBuildings] = useState(["Langston Library", "Science Library", "Gateway Study Center", "Multimedia Resources Center"]);
+    const [maxCapacity, setMaxCapacity] = useState(1000);
 
     const getData = async () => {
         try {
@@ -41,8 +40,19 @@ export default function random() {
     }, [data])
 
     return (
-        <div>
-
-        </div>
+        <>
+            {
+                buildings && buildings.includes("Langston Library") ? <div>Map list to display study rooms for LL</div> : <div> No Rooms Available for LL</div>
+            }
+            {
+                buildings && buildings.includes("Science Library") ? <div>Map list to display study rooms for SL</div> : <div> No Rooms Available for SL</div>
+            }
+            {
+                buildings && buildings.includes("Gateway Study Center") ? <div>Map list to display study rooms for GSC</div> : <div> No Rooms Available for GSC</div>
+            }
+            {
+                buildings && buildings.includes("Multimedia Resources Center") ? <div>Map list to display study rooms for MRC</div> : <div> No Rooms Available for MRC</div>
+            }
+        </>
     )
 }
