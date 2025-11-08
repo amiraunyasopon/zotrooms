@@ -9,16 +9,17 @@ export default function random() {
     const [building, setBuilding] = useState(null);
     const [maxCapacity, setMaxCapacity] = useState(null);
 
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const data = await fetchRooms();
-                setRoomData(data);
-                console.log(data)
-            } catch (error) {
-                console.error("Error fetching room data. ", error);
-            }
+    const getData = async () => {
+        try {
+            const data = await fetchRooms();
+            setRoomData(data.data);
+            console.log(data.data)
+        } catch (error) {
+            console.error("Error fetching room data. ", error);
         }
+    }
+
+    useEffect(() => {
         getData();
     }, [])
 
@@ -26,7 +27,7 @@ export default function random() {
 
     return(
         <div>
-
+            
         </div>
     )
 }
