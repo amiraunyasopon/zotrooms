@@ -141,9 +141,9 @@ export default function MainPage() {
                 </div>
 
 
-                <div className='w-3/4 fixed right-0 h-full bg-gray-500 overflow-auto'>
-                    <h1>Science Library</h1>
-                    <div className="w-3/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ">
+                <div className='w-3/4 fixed right-0 h-full bg-yellow-400 overflow-auto'>
+                    <h1 className="ml-10 text-2xl font-serif">Science Library</h1> 
+                    <div className="w-4/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ml-10">
                     {
                         buildings.ScienceLibrary ? (
                             startTime && endTime ?
@@ -152,10 +152,10 @@ export default function MainPage() {
                                     room.location === "Science Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
                                 )
                                     .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
-                                            <div>{item.name}</div>
+                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
+                                            <a href={item.url}>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : item.name}</a>
                                             
-
+                                            {item.url}
 
                                         </div>
                                     ) :
@@ -164,9 +164,9 @@ export default function MainPage() {
                                     room.location === "Science Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
                                 )
                                     .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
-                                            <div>{item.name}</div>
-                                            
+                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
+                                            <a href={item.url}><div>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div></a>
+                                           <div>🔗 </div>
                                         </div>
                                     )
                         )
@@ -174,8 +174,8 @@ export default function MainPage() {
                             <div> No Rooms Available for SL</div>
                     }
                     </div>
-                    <h1>Langston Library</h1>
-                    <div className="w-3/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ">
+                    <h1 className="ml-10 text-2xl font-serif">Langson Library</h1>
+                    <div className="w-4/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ml-10">
                     {
                         buildings.LangsonLibrary ? (
                             startTime && endTime ?
@@ -184,9 +184,9 @@ export default function MainPage() {
                                     room.location === "Langson Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
                                 )
                                     .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
-                                            <div>{item.name}</div>
-                                            <div> {item.location} </div> 
+                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
+                                            <div>{item.name.slice(0,7) == "Langson" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div>
+                                               
 
 
                                         </div>
@@ -196,9 +196,9 @@ export default function MainPage() {
                                     room.location === "Langson Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
                                 )
                                     .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
-                                            <div>{item.name}</div>
-                                            <div> {item.location} </div> 
+                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
+                                            <div>{item.name.slice(0,7) == "Langson" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div>
+                                               
 
 
                                         </div>
@@ -209,8 +209,8 @@ export default function MainPage() {
                             <div> No Rooms Available for LL</div>
                     }
                     </div>
-                    <h1>Gateway Study Center</h1>
-                    <div className="w-3/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ">
+                    <h1 className="ml-10 text-2xl font-serif">Gateway Study Center</h1>
+                    <div className="w-4/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ml-10">
                     {
                         buildings.GatewayStudyCenter ? (
                             startTime && endTime ?
@@ -219,9 +219,9 @@ export default function MainPage() {
                                     room.location === "Gateway Study Center" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
                                 )
                                     .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
-                                            <div>{item.name}</div>
-                                            <div> {item.location} </div> 
+                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
+                                            <div>{item.name.slice(0,7) == "Gateway" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div>
+                                                
 
 
                                         </div>
@@ -231,9 +231,9 @@ export default function MainPage() {
                                     room.location === "Gateway Study Center" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
                                 )
                                     .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
-                                            <div>{item.name}</div>
-                                            <div> {item.location} </div> 
+                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
+                                            <div>{item.name.slice(0,7) == "Gateway" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div>
+                                               
 
 
                                         </div>
@@ -242,8 +242,8 @@ export default function MainPage() {
                             :
                             <div> No Rooms Available for GSC</div>
                     }</div>
-                    <h1>Multimedia Resources Center</h1>
-                    <div className="w-3/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ">
+                    <h1 className="ml-10 text-2xl font-serif">Multimedia Resources Center</h1>
+                    <div className="w-4/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ml-10">
                     {
                         buildings.MultimediaResourcesCenter ? (
                             startTime && endTime ?
@@ -252,9 +252,9 @@ export default function MainPage() {
                                     room.location === "Multimedia Resources Center" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
                                 )
                                     .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
-                                            <div>{item.name}</div>
-                                            <div> {item.location} </div> 
+                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
+                                            <div>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div>
+                                                
 
 
                                         </div>
@@ -264,9 +264,9 @@ export default function MainPage() {
                                     room.location === "Multimedia Resources Center" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
                                 )
                                     .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
-                                            <div>{item.name}</div>
-                                            <div> {item.location} </div> 
+                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
+                                            <div>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.slice(0,10) == "Study room" ? item.name.slice(11, 1000) : (item.name.length < 15 ? item.name : "MORE ->"))}</div>
+                                                
 
 
                                         </div>
@@ -275,8 +275,8 @@ export default function MainPage() {
                             :
                             <div> No Rooms Available for MRC</div>
                     }</div>
-                    <h1>Grunigen Medical Library</h1>
-                    <div className="w-3/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ">
+                    <h1 className="ml-10 text-2xl font-serif">Grunigen Medical Library</h1>
+                    <div className="w-4/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ml-10">
                     {
                         buildings.GrunigenMedicalLibrary ? (
                             startTime && endTime ?
@@ -285,9 +285,9 @@ export default function MainPage() {
                                     room.location === "Grunigen Medical Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
                                 )
                                     .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
-                                            <div>{item.name}</div>
-                                            <div> {item.location} </div> 
+                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
+                                            <div>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div>
+                                               
 
 
                                         </div>
@@ -297,9 +297,9 @@ export default function MainPage() {
                                     room.location === "Grunigen Medical Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
                                 )
                                     .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
+                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
                                             <div>{item.name}</div>
-                                            <div> {item.location} </div> 
+                                               
 
 
                                         </div>
