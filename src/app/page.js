@@ -47,27 +47,19 @@ export default function MainPage() {
             }
         }
         getData();
-
-        console.log(data.filter((room) => room.location === "Science Library"))
     }, [])
-
-    useEffect(() => {
-       console.log(day + " " + startTime + " " + endTime + "library science " + buildings.ScienceLibrary)
-   }, [day, startTime, endTime, buildings]);
 
 
   
        const handleLocationChange = (e, type) => {
         
         let newVal = e.target.checked
-        console.log(newVal + " " + type)
         setBuildings((old) => ({
             ...old,
-            type: newVal
+            [type]: newVal
         }))
     
-    console.log(buildings.type + "  asdfasdf")
-console.log(day + " " + startTime + " " + endTime + "library science " + buildings.ScienceLibrary)}
+}
 
 
 
@@ -111,10 +103,10 @@ console.log(day + " " + startTime + " " + endTime + "library science " + buildin
       
            <FormGroup className='w-full  flex flex-col items-center'>
            <FormControlLabel control={<Checkbox defaultChecked />} label="Science Library" onChange={(e) => handleLocationChange(e, "ScienceLibrary")} className='w-2/3 flex justify-start'/>
-           <FormControlLabel control={<Checkbox defaultChecked />} label="Langson Library"  className='w-2/3 flex justify-start'/>
-           <FormControlLabel control={<Checkbox defaultChecked />} label="Gateway Study Center" className='w-2/3 flex justify-start'/>
-           <FormControlLabel control={<Checkbox defaultChecked />} label="Multimedia Resources Center" className='w-2/3 flex justify-start'/>
-           <FormControlLabel control={<Checkbox defaultChecked />} label="Grunigen Medical Library" className='w-2/3 flex justify-start'/>
+           <FormControlLabel control={<Checkbox defaultChecked />} label="Langson Library" onChange={(e) => handleLocationChange(e, "LangsonLibrary")} className='w-2/3 flex justify-start'/>
+           <FormControlLabel control={<Checkbox defaultChecked />} label="Gateway Study Center" onChange={(e) => handleLocationChange(e, "GatewayStudyCenter")} className='w-2/3 flex justify-start'/>
+           <FormControlLabel control={<Checkbox defaultChecked />} label="Multimedia Resources Center" onChange={(e) => handleLocationChange(e, "MultimediaResourcesCenter")} className='w-2/3 flex justify-start'/>
+           <FormControlLabel control={<Checkbox defaultChecked />} label="Grunigen Medical Library" onChange={(e) => handleLocationChange(e, "GrunigenMedicalLibrary")} className='w-2/3 flex justify-start'/>
            </FormGroup>
          
          
