@@ -92,7 +92,7 @@ export default function MainPage() {
 
 
 
-                <div className="bg-[#255799] w-1/4 h-full  relative overflow-auto">
+                <div className="bg-[#255799] w-1/4 h-full  fixed  l-0 overflow-auto">
                     <div className="flex flex-row items-center">
                         <img src="logo.png" className=" h-2/3 w-2/3 "></img>
                         <h1 className="text-[1.90vw] font-serif text-white font-extrabold overflow-hidden w-3/4" >Zot Rooms</h1></div>
@@ -141,8 +141,9 @@ export default function MainPage() {
                 </div>
 
 
-                <div>
+                <div className='w-3/4 fixed right-0 h-full bg-gray-500 overflow-auto'>
                     <h1>Science Library</h1>
+                    <div className="w-3/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ">
                     {
                         buildings.ScienceLibrary ? (
                             startTime && endTime ?
@@ -151,20 +152,30 @@ export default function MainPage() {
                                     room.location === "Science Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
                                 )
                                     .map((item) =>
-                                        <div key={item.id}>{item.id} {item.description}</div>
+                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
+                                            <div>{item.name}</div>
+                                            
+
+
+                                        </div>
                                     ) :
                                 // if no startTime AND endTime, only filter by day and availability
                                 data.filter((room) =>
                                     room.location === "Science Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
                                 )
                                     .map((item) =>
-                                        <div key={item.id}>{item.id}</div>
+                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
+                                            <div>{item.name}</div>
+                                            
+                                        </div>
                                     )
                         )
                             :
                             <div> No Rooms Available for SL</div>
                     }
+                    </div>
                     <h1>Langston Library</h1>
+                    <div className="w-3/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ">
                     {
                         buildings.LangsonLibrary ? (
                             startTime && endTime ?
@@ -173,21 +184,33 @@ export default function MainPage() {
                                     room.location === "Langson Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
                                 )
                                     .map((item) =>
-                                        <div key={item.id}>{item.id} {item.description}</div>
+                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
+                                            <div>{item.name}</div>
+                                            <div> {item.location} </div> 
+
+
+                                        </div>
                                     ) :
                                 // if no startTime AND endTime, only filter by day and availability
                                 data.filter((room) =>
                                     room.location === "Langson Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
                                 )
                                     .map((item) =>
-                                        <div key={item.id}>{item.id}</div>
+                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
+                                            <div>{item.name}</div>
+                                            <div> {item.location} </div> 
+
+
+                                        </div>
                                     )
                         )
                             :
 
                             <div> No Rooms Available for LL</div>
                     }
+                    </div>
                     <h1>Gateway Study Center</h1>
+                    <div className="w-3/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ">
                     {
                         buildings.GatewayStudyCenter ? (
                             startTime && endTime ?
@@ -196,20 +219,31 @@ export default function MainPage() {
                                     room.location === "Gateway Study Center" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
                                 )
                                     .map((item) =>
-                                        <div key={item.id}>{item.id} {item.description}</div>
+                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
+                                            <div>{item.name}</div>
+                                            <div> {item.location} </div> 
+
+
+                                        </div>
                                     ) :
                                 // if no startTime AND endTime, only filter by day and availability
                                 data.filter((room) =>
                                     room.location === "Gateway Study Center" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
                                 )
                                     .map((item) =>
-                                        <div key={item.id}>{item.id}</div>
+                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
+                                            <div>{item.name}</div>
+                                            <div> {item.location} </div> 
+
+
+                                        </div>
                                     )
                         )
                             :
                             <div> No Rooms Available for GSC</div>
-                    }
+                    }</div>
                     <h1>Multimedia Resources Center</h1>
+                    <div className="w-3/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ">
                     {
                         buildings.MultimediaResourcesCenter ? (
                             startTime && endTime ?
@@ -218,20 +252,31 @@ export default function MainPage() {
                                     room.location === "Multimedia Resources Center" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
                                 )
                                     .map((item) =>
-                                        <div key={item.id}>{item.id} {item.description}</div>
+                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
+                                            <div>{item.name}</div>
+                                            <div> {item.location} </div> 
+
+
+                                        </div>
                                     ) :
                                 // if no startTime AND endTime, only filter by day and availability
                                 data.filter((room) =>
                                     room.location === "Multimedia Resources Center" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
                                 )
                                     .map((item) =>
-                                        <div key={item.id}>{item.id}</div>
+                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
+                                            <div>{item.name}</div>
+                                            <div> {item.location} </div> 
+
+
+                                        </div>
                                     )
                         )
                             :
                             <div> No Rooms Available for MRC</div>
-                    }
+                    }</div>
                     <h1>Grunigen Medical Library</h1>
+                    <div className="w-3/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ">
                     {
                         buildings.GrunigenMedicalLibrary ? (
                             startTime && endTime ?
@@ -240,19 +285,29 @@ export default function MainPage() {
                                     room.location === "Grunigen Medical Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
                                 )
                                     .map((item) =>
-                                        <div key={item.id}>{item.id} {item.description}</div>
+                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
+                                            <div>{item.name}</div>
+                                            <div> {item.location} </div> 
+
+
+                                        </div>
                                     ) :
                                 // if no startTime AND endTime, only filter by day and availability
                                 data.filter((room) =>
                                     room.location === "Grunigen Medical Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
                                 )
                                     .map((item) =>
-                                        <div key={item.id}>{item.id}</div>
+                                        <div key={item.id} className='w-1/4 h-1/3 flex flex-col p-5 rounded-md bg-gray-700'>
+                                            <div>{item.name}</div>
+                                            <div> {item.location} </div> 
+
+
+                                        </div>
                                     )
                         )
                             :
                             <div> No Rooms Available for GML</div>
-                    }
+                    }</div>
                 </div>
             </div>
         </>
