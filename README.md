@@ -16,4 +16,5 @@ Tech Stack:
 - React
 - Next.js
 - Material UI
+- Tailwind CSS
 - Anteater API
