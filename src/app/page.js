@@ -155,7 +155,8 @@ export default function MainPage() {
                                         <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
                                             <a href={item.url}>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : item.name}</a>
                                             
-                                            {item.url}
+                                            <div>🔗</div>
+
 
                                         </div>
                                     ) :
@@ -166,7 +167,7 @@ export default function MainPage() {
                                     .map((item) =>
                                         <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
                                             <a href={item.url}><div>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div></a>
-                                           <div>🔗 </div>
+                                           <div>🔗</div>
                                         </div>
                                     )
                         )
@@ -185,7 +186,8 @@ export default function MainPage() {
                                 )
                                     .map((item) =>
                                         <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <div>{item.name.slice(0,7) == "Langson" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div>
+                                            <a href={item.url}>{item.name.slice(0,7) == "Langson" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
+                                           <div>🔗</div>
                                                
 
 
@@ -197,7 +199,8 @@ export default function MainPage() {
                                 )
                                     .map((item) =>
                                         <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <div>{item.name.slice(0,7) == "Langson" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div>
+                                            <a href={item.url}>{item.name.slice(0,7) == "Langson" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
+                                           <div>🔗</div>
                                                
 
 
@@ -220,7 +223,8 @@ export default function MainPage() {
                                 )
                                     .map((item) =>
                                         <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <div>{item.name.slice(0,7) == "Gateway" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div>
+                                            <a href={item.url}>{item.name.slice(0,7) == "Gateway" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
+                                           <div>🔗</div>
                                                 
 
 
@@ -232,7 +236,8 @@ export default function MainPage() {
                                 )
                                     .map((item) =>
                                         <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <div>{item.name.slice(0,7) == "Gateway" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div>
+                                            <a href={item.url}>{item.name.slice(0,7) == "Gateway" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
+                                           <div>🔗</div>
                                                
 
 
@@ -253,7 +258,8 @@ export default function MainPage() {
                                 )
                                     .map((item) =>
                                         <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <div>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div>
+                                            <a href={item.url}>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
+                                           <div>🔗</div>
                                                 
 
 
@@ -265,7 +271,8 @@ export default function MainPage() {
                                 )
                                     .map((item) =>
                                         <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <div>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.slice(0,10) == "Study room" ? item.name.slice(11, 1000) : (item.name.length < 15 ? item.name : "MORE ->"))}</div>
+                                            <a href={item.url}>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.slice(0,10) == "Study room" ? item.name.slice(11, 1000) : (item.name.length < 15 ? item.name : "MORE ->"))}</a>
+                                           <div>🔗</div>
                                                 
 
 
@@ -286,7 +293,8 @@ export default function MainPage() {
                                 )
                                     .map((item) =>
                                         <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <div>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div>
+                                            <a href={item.url}>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
+                                           <div>🔗</div>
                                                
 
 
@@ -298,8 +306,8 @@ export default function MainPage() {
                                 )
                                     .map((item) =>
                                         <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <div>{item.name}</div>
-                                               
+                                            <a href={item.url}>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
+                                            <div>🔗</div>
 
 
                                         </div>
