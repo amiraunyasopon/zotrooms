@@ -169,7 +169,8 @@ export default function MainPage() {
                                     room.location === "Science Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
                                 )
                                     .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
+                                        <div key={item.id} className='w-32 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799] 
+                                        '>
                                             <a href={item.url}>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : item.name}</a>
                                             
                                             {item.url}
@@ -181,8 +182,8 @@ export default function MainPage() {
                                     room.location === "Science Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
                                 )
                                     .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <a href={item.url}><div>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div></a>
+                                        <div key={item.id} className='min-w-40 h-1/3 font-serif text-white flex flex-col rounded-md bg-[#255799] pl-5 pt-3 '>
+                                            <a href={item.url}><div className='text-2xl'>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div></a>
                                            <div>🔗 </div>
                                         </div>
                                     )
