@@ -92,48 +92,65 @@ export default function MainPage() {
 
 
 
-                <div className="bg-[#255799] w-1/4 h-full  fixed  l-0 overflow-auto">
-                    <div className="flex flex-row items-center">
-                        <img src="logo.png" className=" h-2/3 w-2/3 "></img>
-                        <h1 className="text-[1.90vw] font-serif text-white font-extrabold overflow-hidden w-3/4" >Zot Rooms</h1></div>
-                    <h2 className="text-[1.10vw] font-serif text-white font-bold overflow-hidden w-3/4 w-full text-center" >Select Date</h2>
-
-
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateCalendar
-                            value={dayjs(day)}
-                            onChange={(newDay) => {
-                                setDay(newDay.format('YYYY-MM-DD'))
-                            }}
-                            className="text-white"
-                        />
-                    </LocalizationProvider>
+                <div className="bg-[#255799] w-1/4 h-full  fixed  l-0 overflow-y-auto overflow-x-hidden">
+                <div className="flex flex-row items-center">
+                       <img src="logo.png" className="h-1/2 w-1/2 "></img>
+                       <h1 className="text-[1.90vw] font-serif text-white font-extrabold overflow-hidden w-3/4" >Zot Rooms</h1></div>
+                   <h2 className="text-[1.40vw] font-serif text-white font-bold overflow-hidden w-full text-start ml-5 mb-3" >Select Date</h2>
 
 
 
 
-                    <h2 className="text-[1.10vw] font-serif text-white font-bold overflow-hidden w-3/4 w-full text-center" >Select Time</h2>
-                    <div className="w-full flex flex-row justify-center gap-7"> <input
-                        type="time"
-                        id="startTime" onChange={(e) => setStartTime(e.target.value)} />
+                   <LocalizationProvider dateAdapter={AdapterDayjs}>
+                       <DateCalendar
+                           value={dayjs(day)}
+                          
+                           onChange={(newDay) => {
+                               setDay(newDay.format('YYYY-MM-DD'))
+                           }}
+                          
+                           className="text-black bg-white/50 rounded-md"
+                          
+                       />
+                   </LocalizationProvider>
 
 
-                        <input
-                            type="time"
-                            id="endTime" onChange={(e) => setEndTime(e.target.value)} /> </div>
-
-
-                    <h2 className="text-[1.10vw] font-serif text-white font-bold overflow-hidden w-3/4 w-full text-center mt-5" >Select Location</h2>
 
 
 
-                    <FormGroup className='w-full  flex flex-col items-center'>
-                        <FormControlLabel control={<Checkbox defaultChecked />} label="Science Library" onChange={(e) => handleLocationChange(e, "ScienceLibrary")} className='w-2/3 flex justify-start' />
-                        <FormControlLabel control={<Checkbox defaultChecked />} label="Langson Library" onChange={(e) => handleLocationChange(e, "LangsonLibrary")} className='w-2/3 flex justify-start' />
-                        <FormControlLabel control={<Checkbox defaultChecked />} label="Gateway Study Center" onChange={(e) => handleLocationChange(e, "GatewayStudyCenter")} className='w-2/3 flex justify-start' />
-                        <FormControlLabel control={<Checkbox defaultChecked />} label="Multimedia Resources Center" onChange={(e) => handleLocationChange(e, "MultimediaResourcesCenter")} className='w-2/3 flex justify-start' />
-                        <FormControlLabel control={<Checkbox defaultChecked />} label="Grunigen Medical Library" onChange={(e) => handleLocationChange(e, "GrunigenMedicalLibrary")} className='w-2/3 flex justify-start' />
-                    </FormGroup>
+
+
+
+                   <h2 className="text-[1.40vw] font-serif text-white font-bold overflow-hidden w-3/4 w-full text-start ml-5 mb-3 mt-5" >Select Time</h2>
+                   <div className="w-full flex flex-row justify-start gap-3 ml-5 items-center"> <input
+                       type="time"
+                       id="startTime" onChange={(e) => setStartTime(e.target.value)}
+                       className='bg-white/50 rounded-lg hover:bg-white/30 p-3'
+                       />
+
+
+                           {" to "}
+                       <input
+                           type="time"
+                           id="endTime" onChange={(e) => setEndTime(e.target.value)} className='bg-white/50 rounded-lg hover:bg-white/30 p-3'/> </div>
+
+
+
+
+                   <h2 className="text-[1.40vw] font-serif text-white font-bold overflow-hidden w-3/4 w-full text-start ml-5 mb-3 mt-5" >Select Location</h2>
+
+
+
+
+
+
+                   <FormGroup className='w-full  flex flex-col items-start ml-5'>
+                       <FormControlLabel control={<Checkbox defaultChecked />} label="Science Library" onChange={(e) => handleLocationChange(e, "ScienceLibrary")} className='w-2/3 flex justify-start  ' />
+                       <FormControlLabel control={<Checkbox defaultChecked />} label="Langson Library" onChange={(e) => handleLocationChange(e, "LangsonLibrary")} className='w-2/3 flex justify-start  ' />
+                       <FormControlLabel control={<Checkbox defaultChecked />} label="Gateway Study Center" onChange={(e) => handleLocationChange(e, "GatewayStudyCenter")} className='w-2/3 flex justify-start  ' />
+                       <FormControlLabel control={<Checkbox defaultChecked />} label="Multimedia Resources Center" onChange={(e) => handleLocationChange(e, "MultimediaResourcesCenter")} className='w-2/3 flex justify-start ' />
+                       <FormControlLabel control={<Checkbox defaultChecked />} label="Grunigen Medical Library" onChange={(e) => handleLocationChange(e, "GrunigenMedicalLibrary")} className='w-2/3 flex justify-start ' />
+                   </FormGroup>
 
 
 
