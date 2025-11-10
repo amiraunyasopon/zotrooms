@@ -1,3 +1,4 @@
+# ZotHacks 2025
 ## Inspiration
 Every year, students, clubs, and campus organizations book study rooms for tutoring sessions, final exam cram sessions, and board meetings. However, the current resources make it difficult to search for rooms that meet students' specific needs.
 
