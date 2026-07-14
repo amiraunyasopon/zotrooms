@@ -1,323 +1,218 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { fetchRooms, fetchRoom } from "./api/user-api";
-
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import * as React from 'react';
-
-
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
-export default function MainPage() {
-    const [data, setData] = useState([]);
-    const [buildings, setBuildings] = useState({ LangsonLibrary: true, ScienceLibrary: true, GatewayStudyCenter: true, MultimediaResourcesCenter: true, GrunigenMedicalLibrary: true });
-    const [startTime, setStartTime] = useState(0);
-    const [endTime, setEndTime] = useState(0);
-    const [day, setDay] = useState("2025-11-08");
-    // all buttons for buildings initially are selected
-    // if a button is selected it turns the value for the building true
-    // if unselected it turns the value for the building false
+import Navbar from '../Components/navbar';
+import { fetchRooms } from './api/user-api';
 
+const LOCATIONS = [
+  { key: 'ScienceLibrary', label: 'Science Library', eyebrow: 'Science' },
+  { key: 'LangsonLibrary', label: 'Langson Library', eyebrow: 'Langson' },
+  { key: 'GatewayStudyCenter', label: 'Gateway Study Center', eyebrow: 'Gateway' },
+  { key: 'MultimediaResourcesCenter', label: 'Multimedia Resources Center', eyebrow: 'Multimedia' },
+  { key: 'GrunigenMedicalLibrary', label: 'Grunigen Medical Library', eyebrow: 'Grunigen' },
+];
 
-    // if a capacity is selected, make sure to map through study rooms and only pass study rooms with capacities >= minCapacity
+const DEFAULT_BUILDINGS = Object.fromEntries(LOCATIONS.map(({ key }) => [key, true]));
 
-
-    // if a date is selected, make sure to map through study rooms and only pass study rooms which have at least one slot on the day that isAvailable = true
-
-
-    // check for slots between start time and end time, if all slots are available, it passes the map check
-
-
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const json = await fetchRooms();
-                setData(json.data);
-                console.log('getData', json.data);
-            } catch (error) {
-                console.error("Error fetching room data. ", error);
-            }
-        }
-        getData();
-    }, [])
-
-
-
-    const handleLocationChange = (e, type) => {
-
-        let newVal = e.target.checked
-        setBuildings((old) => ({
-            ...old,
-            [type]: newVal
-        }))
-
+function compareTime(timeOne, timeTwo) {
+  const timeToDate = (time) => {
+    if (!time) {
+      return null;
     }
 
-    const compareTime = (timeOne, timeTwo) => {
-        const timeToDate = (time) => {
-            const [hours, minutes, seconds] = time.split(":").map(Number);
-            const date = new Date(); 
-            date.setHours(hours, minutes, seconds || 0, 0);
-            return date;
-        };
+    const [hours, minutes, seconds] = time.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, seconds || 0, 0);
+    return date;
+  };
 
-        const dateOne = timeToDate(timeOne);
-        const dateTwo = timeToDate(timeTwo);
+  const dateOne = timeToDate(timeOne);
+  const dateTwo = timeToDate(timeTwo);
 
-        return dateOne >= dateTwo;
+  if (!dateOne || !dateTwo) {
+    return false;
+  }
+
+  return dateOne >= dateTwo;
+}
+
+function slotMatches(room, day, startTime, endTime) {
+  return (room?.slots ?? []).some((slot) => {
+    const slotStart = slot.start?.split('T')?.[1]?.split('+')?.[0];
+    const slotEnd = slot.end?.split('T')?.[1]?.split('+')?.[0];
+    const slotDay = slot.start?.split('T')?.[0];
+    const timeMatch = startTime && endTime ? compareTime(slotStart, startTime) && compareTime(endTime, slotEnd) : true;
+
+    return slotDay === day && slot.isAvailable && timeMatch;
+  });
+}
+
+function formatRoomName(roomName) {
+  if (!roomName) {
+    return 'Study room';
+  }
+
+  return roomName.length > 54 ? `${roomName.slice(0, 51)}...` : roomName;
+}
+
+function RoomCard({ room, day, startTime, endTime }) {
+  const visibleSlots = (room?.slots ?? []).filter((slot) => {
+    const slotStart = slot.start?.split('T')?.[1]?.split('+')?.[0];
+    const slotEnd = slot.end?.split('T')?.[1]?.split('+')?.[0];
+    const slotDay = slot.start?.split('T')?.[0];
+    const timeMatch = startTime && endTime ? compareTime(slotStart, startTime) && compareTime(endTime, slotEnd) : true;
+
+    return slotDay === day && slot.isAvailable && timeMatch;
+  }).length;
+
+  return (
+    <article className="group flex h-full flex-col justify-between rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_18px_50px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1 hover:border-amber-300 hover:shadow-[0_24px_60px_rgba(15,23,42,0.14)]">
+      <div>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <div className="mb-3 h-2.5 w-20 rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500" />
+            <h4 className="text-lg font-semibold leading-6 text-slate-950">{formatRoomName(room.name)}</h4>
+          </div>
+          <span className="rounded-full bg-slate-950 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-white">
+            Live
+          </span>
+        </div>
+
+        <p className="mt-3 text-sm leading-6 text-slate-600">
+          {visibleSlots} matching slot{visibleSlots === 1 ? '' : 's'} for the selected filters.
+        </p>
+      </div>
+
+      <div className="mt-6 flex items-center justify-between gap-4">
+        <div className="text-xs uppercase tracking-[0.35em] text-slate-400">Open room</div>
+        <a
+          href={room.url}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-amber-500"
+        >
+          View details
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </article>
+  );
+}
+
+function LocationSection({ location, rooms }) {
+  return (
+    <section className="overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white/90 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+      <div className="flex flex-col gap-4 border-b border-slate-200/80 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="text-xs uppercase tracking-[0.35em] text-amber-500/90">{location.eyebrow}</p>
+          <h3 className="mt-1 text-2xl font-semibold tracking-tight text-slate-950">{location.label}</h3>
+        </div>
+        <div className="inline-flex items-center gap-2 rounded-full bg-slate-950 px-4 py-2 text-sm font-medium text-white">
+          <span className="h-2 w-2 rounded-full bg-emerald-400" />
+          {rooms.length} room{rooms.length === 1 ? '' : 's'} available
+        </div>
+      </div>
+
+      <div className="px-5 py-5">
+        {rooms.length ? (
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {rooms.map((room) => (
+              <RoomCard key={room.id} room={room} day={room.day} startTime={room.startTime} endTime={room.endTime} />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-[1.5rem] border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center">
+            <p className="text-lg font-semibold text-slate-900">No available rooms match these filters.</p>
+            <p className="mt-2 text-sm leading-6 text-slate-500">
+              Try widening the time window or toggling another location.
+            </p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+export default function MainPage() {
+  const [data, setData] = useState([]);
+  const [buildings, setBuildings] = useState(DEFAULT_BUILDINGS);
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [day, setDay] = useState(dayjs().format('YYYY-MM-DD'));
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const json = await fetchRooms();
+        setData(json.data);
+      } catch (error) {
+        console.error('Error fetching room data.', error);
+      }
     };
 
-    useEffect(() => {
-        console.log('startTime changed:', startTime)
-    }, [startTime])
+    getData();
+  }, []);
 
-    useEffect(() => {
-        console.log('endTime changed:', endTime)
-    }, [endTime])
+  const handleLocationChange = (event, type) => {
+    const nextValue = event.target.checked;
+    setBuildings((current) => ({
+      ...current,
+      [type]: nextValue,
+    }));
+  };
 
-    useEffect(() => {
-        console.log('day changed:', day)
-    }, [day])
+  const selectedLocationCount = LOCATIONS.filter(({ key }) => buildings[key]).length;
+  const locationsWithRooms = LOCATIONS.filter(
+    ({ key, label }) => buildings[key] && data.some((room) => room.location === label && slotMatches(room, day, startTime, endTime)),
+  );
 
-    return (
-        <>
-            <div className="min-h-screen w-screen">
+  return (
+    <div className="h-screen overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.16),_transparent_34%),linear-gradient(180deg,_#07111f_0%,_#0f172a_34%,_#f8fafc_34%,_#e2e8f0_100%)] text-slate-100">
+      <div className="mx-auto flex h-full w-full max-w-[1800px] flex-col lg:flex-row lg:overflow-hidden">
+        <Navbar
+          day={day}
+          startTime={startTime}
+          endTime={endTime}
+          buildings={buildings}
+          onDayChange={setDay}
+          onStartTimeChange={setStartTime}
+          onEndTimeChange={setEndTime}
+          onLocationChange={handleLocationChange}
+        />
 
+        <main className="relative flex-1 min-h-0 overflow-y-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-8">
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div className="absolute -left-24 top-8 h-72 w-72 rounded-full bg-amber-300/20 blur-3xl" />
+            <div className="absolute right-0 top-24 h-80 w-80 rounded-full bg-sky-300/20 blur-3xl" />
+          </div>
 
+          <div className="relative mt-6 space-y-5 pb-10">
+            {locationsWithRooms.length ? (
+              locationsWithRooms.map((location) => {
+                const rooms = data
+                  .filter((room) => room.location === location.label && slotMatches(room, day, startTime, endTime))
+                  .map((room) => ({
+                    ...room,
+                    day,
+                    startTime,
+                    endTime,
+                  }));
 
-
-                <div className="bg-[#255799] w-1/4 h-full  fixed  l-0 overflow-auto">
-                    <div className="flex flex-row items-center">
-                        <img src="logo.png" className=" h-2/3 w-2/3 "></img>
-                        <h1 className="text-[1.90vw] font-serif text-white font-extrabold overflow-hidden w-3/4" >Zot Rooms</h1></div>
-                    <h2 className="text-[1.10vw] font-serif text-white font-bold overflow-hidden w-3/4 w-full text-center" >Select Date</h2>
-
-
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DateCalendar
-                            value={dayjs(day)}
-                            onChange={(newDay) => {
-                                setDay(newDay.format('YYYY-MM-DD'))
-                            }}
-                            className="text-white"
-                        />
-                    </LocalizationProvider>
-
-
-
-
-                    <h2 className="text-[1.10vw] font-serif text-white font-bold overflow-hidden w-3/4 w-full text-center" >Select Time</h2>
-                    <div className="w-full flex flex-row justify-center gap-7"> <input
-                        type="time"
-                        id="startTime" onChange={(e) => setStartTime(e.target.value)} />
-
-
-                        <input
-                            type="time"
-                            id="endTime" onChange={(e) => setEndTime(e.target.value)} /> </div>
-
-
-                    <h2 className="text-[1.10vw] font-serif text-white font-bold overflow-hidden w-3/4 w-full text-center mt-5" >Select Location</h2>
-
-
-
-                    <FormGroup className='w-full  flex flex-col items-center'>
-                        <FormControlLabel control={<Checkbox defaultChecked />} label="Science Library" onChange={(e) => handleLocationChange(e, "ScienceLibrary")} className='w-2/3 flex justify-start' />
-                        <FormControlLabel control={<Checkbox defaultChecked />} label="Langson Library" onChange={(e) => handleLocationChange(e, "LangsonLibrary")} className='w-2/3 flex justify-start' />
-                        <FormControlLabel control={<Checkbox defaultChecked />} label="Gateway Study Center" onChange={(e) => handleLocationChange(e, "GatewayStudyCenter")} className='w-2/3 flex justify-start' />
-                        <FormControlLabel control={<Checkbox defaultChecked />} label="Multimedia Resources Center" onChange={(e) => handleLocationChange(e, "MultimediaResourcesCenter")} className='w-2/3 flex justify-start' />
-                        <FormControlLabel control={<Checkbox defaultChecked />} label="Grunigen Medical Library" onChange={(e) => handleLocationChange(e, "GrunigenMedicalLibrary")} className='w-2/3 flex justify-start' />
-                    </FormGroup>
-
-
-
-
-                </div>
-
-
-                <div className='w-3/4 fixed right-0 h-full bg-yellow-400 overflow-auto'>
-                    <h1 className="ml-10 text-2xl font-serif">Science Library</h1> 
-                    <div className="w-4/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ml-10">
-                    {
-                        buildings.ScienceLibrary ? (
-                            startTime && endTime ?
-                                // if has startTime AND endTime, filter by day, availability, and startTime AND endTime
-                                data.filter((room) =>
-                                    room.location === "Science Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
-                                )
-                                    .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <a href={item.url}>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : item.name}</a>
-                                            
-                                            <div>🔗</div>
-
-
-                                        </div>
-                                    ) :
-                                // if no startTime AND endTime, only filter by day and availability
-                                data.filter((room) =>
-                                    room.location === "Science Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
-                                )
-                                    .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <a href={item.url}><div>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</div></a>
-                                           <div>🔗</div>
-                                        </div>
-                                    )
-                        )
-                            :
-                            <div> No Rooms Available for SL</div>
-                    }
-                    </div>
-                    <h1 className="ml-10 text-2xl font-serif">Langson Library</h1>
-                    <div className="w-4/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ml-10">
-                    {
-                        buildings.LangsonLibrary ? (
-                            startTime && endTime ?
-                                // if has startTime AND endTime, filter by day, availability, and startTime AND endTime
-                                data.filter((room) =>
-                                    room.location === "Langson Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
-                                )
-                                    .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <a href={item.url}>{item.name.slice(0,7) == "Langson" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
-                                           <div>🔗</div>
-                                               
-
-
-                                        </div>
-                                    ) :
-                                // if no startTime AND endTime, only filter by day and availability
-                                data.filter((room) =>
-                                    room.location === "Langson Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
-                                )
-                                    .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <a href={item.url}>{item.name.slice(0,7) == "Langson" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
-                                           <div>🔗</div>
-                                               
-
-
-                                        </div>
-                                    )
-                        )
-                            :
-
-                            <div> No Rooms Available for LL</div>
-                    }
-                    </div>
-                    <h1 className="ml-10 text-2xl font-serif">Gateway Study Center</h1>
-                    <div className="w-4/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ml-10">
-                    {
-                        buildings.GatewayStudyCenter ? (
-                            startTime && endTime ?
-                                // if has startTime AND endTime, filter by day, availability, and startTime AND endTime
-                                data.filter((room) =>
-                                    room.location === "Gateway Study Center" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
-                                )
-                                    .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <a href={item.url}>{item.name.slice(0,7) == "Gateway" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
-                                           <div>🔗</div>
-                                                
-
-
-                                        </div>
-                                    ) :
-                                // if no startTime AND endTime, only filter by day and availability
-                                data.filter((room) =>
-                                    room.location === "Gateway Study Center" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
-                                )
-                                    .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <a href={item.url}>{item.name.slice(0,7) == "Gateway" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
-                                           <div>🔗</div>
-                                               
-
-
-                                        </div>
-                                    )
-                        )
-                            :
-                            <div> No Rooms Available for GSC</div>
-                    }</div>
-                    <h1 className="ml-10 text-2xl font-serif">Multimedia Resources Center</h1>
-                    <div className="w-4/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ml-10">
-                    {
-                        buildings.MultimediaResourcesCenter ? (
-                            startTime && endTime ?
-                                // if has startTime AND endTime, filter by day, availability, and startTime AND endTime
-                                data.filter((room) =>
-                                    room.location === "Multimedia Resources Center" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
-                                )
-                                    .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <a href={item.url}>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
-                                           <div>🔗</div>
-                                                
-
-
-                                        </div>
-                                    ) :
-                                // if no startTime AND endTime, only filter by day and availability
-                                data.filter((room) =>
-                                    room.location === "Multimedia Resources Center" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
-                                )
-                                    .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <a href={item.url}>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.slice(0,10) == "Study room" ? item.name.slice(11, 1000) : (item.name.length < 15 ? item.name : "MORE ->"))}</a>
-                                           <div>🔗</div>
-                                                
-
-
-                                        </div>
-                                    )
-                        )
-                            :
-                            <div> No Rooms Available for MRC</div>
-                    }</div>
-                    <h1 className="ml-10 text-2xl font-serif">Grunigen Medical Library</h1>
-                    <div className="w-4/4 h-1/2 bg-yellow-400 flex flex-row gap-2 overflow-auto ml-10">
-                    {
-                        buildings.GrunigenMedicalLibrary ? (
-                            startTime && endTime ?
-                                // if has startTime AND endTime, filter by day, availability, and startTime AND endTime
-                                data.filter((room) =>
-                                    room.location === "Grunigen Medical Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable && compareTime(slot.start.split("T")[1].split("+")[0], startTime) && compareTime(endTime, slot.end.split("T")[1].split("+")[0]) })
-                                )
-                                    .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <a href={item.url}>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
-                                           <div>🔗</div>
-                                               
-
-
-                                        </div>
-                                    ) :
-                                // if no startTime AND endTime, only filter by day and availability
-                                data.filter((room) =>
-                                    room.location === "Grunigen Medical Library" && room.slots.some((slot) => { return slot.start.split("T")[0] === day && slot.isAvailable })
-                                )
-                                    .map((item) =>
-                                        <div key={item.id} className='w-1/4 h-1/3 font-serif text-white flex flex-col p-5 rounded-md bg-[#255799]'>
-                                            <a href={item.url}>{item.name.slice(0,7) == "Science" ? item.name.slice(8, 10000) : (item.name.length < 15 ? item.name : "MORE ->")}</a>
-                                            <div>🔗</div>
-
-
-                                        </div>
-                                    )
-                        )
-                            :
-                            <div> No Rooms Available for GML</div>
-                    }</div>
-                </div>
-            </div>
-        </>
-    )
+                return <LocationSection key={location.key} location={location} rooms={rooms} />;
+              })
+            ) : (
+              <section className="rounded-[2rem] border border-dashed border-slate-300 bg-white/80 px-6 py-12 text-center shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+                <p className="text-2xl font-semibold text-slate-950">No rooms match the current filters.</p>
+                <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500">
+                  Re-enable a location or loosen the selected time window to bring results back.
+                </p>
+              </section>
+            )}
+          </div>
+        </main>
+      </div>
+    </div>
+  );
 }
